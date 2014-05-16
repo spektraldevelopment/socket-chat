@@ -8,12 +8,25 @@ h1 {
   margin: 0 auto;
   padding: 5px;
   text-align: center;
-  width: 50%;
   font-family: Verdana, Geneva, sans-serif;
-  font-size: 25px;
+  font-size: 30px;
   color: #a7c664;
 }
-#mainContent {
+h2 {
+  position: relative;
+  margin: 0 auto;
+  padding: 5px;
+  text-align: center;
+  font-family: Verdana, Geneva, sans-serif;
+  font-size: 20px;
+  text-shadow: 0 0 2px #000000;
+  color: #737d91;
+}
+h3 {
+  margin: 0;
+  padding: 0;
+}
+#mainContainer {
   background-color: #5e5e69;
   position: relative;
   width: 50%;
@@ -28,23 +41,46 @@ h1 {
   -webkit-box-shadow: inset 0px 0px 5px #000000;
   box-shadow: inset 0px 0px 5px #000000;
 }
+#chatContainer {
+  display: block;
+  width: auto;
+  margin: 0 10px;
+  padding: 0;
+  background-color: #ffff00;
+}
 #userSection {
   display: inline-block;
+  width: auto;
   margin: 0;
   padding: 5px;
-  width: 40%;
+  float: left;
   background-color: #737d91;
 }
 #userList {
+  margin: 0;
+  padding: 0;
   list-style: none;
 }
 #chatSection {
   display: inline-block;
-  margin: 5px;
-  padding: 5px;
-  width: 40%;
+  float: right;
+  padding: 0;
+  width: auto;
   background-color: #737d91;
 }
 #chatList {
+  margin: 0;
+  padding: 0;
   list-style: none;
+}
+.chatItem {
+  margin: 5px;
+  padding: 5px;
+  background-color: #5e5e69;
+}
+#messageSection {
+  display: block;
+}
+#messageWindow {
+  width: 100%;
 }

@@ -32,6 +32,10 @@
   box-shadow: @hOffset @vOffset @blur @spread @color;
 }
 
+.textShadow (@color: #888, @blur: 0px, @X: 1px, @Y: 1px) {
+  text-shadow: @X @Y @blur @color;
+}
+
 .rounded-corners (@radius: 5px) {
   -webkit-border-radius: @radius;
   -moz-border-radius: @radius;
@@ -52,14 +56,27 @@ h1 {
   margin: 0 auto;
   padding: 5px;
   text-align: center;
-  width:50%;
-  .header();
+  .header(30px);
   color: @colourTwo;
 }
 
+h2 {
+  position: relative;
+  margin: 0 auto;
+  padding: 5px;
+  text-align: center;
+  .header(20px);
+  .textShadow(#000, 2px, 0, 0);
+  color: @colourOne;
+}
+
+h3 {
+  margin:0;
+  padding:0;
+}
 
 //Ids
-#mainContent {
+#mainContainer {
   background-color: @colourFour;
   position: relative;
   width: 50%;
@@ -69,16 +86,27 @@ h1 {
   .shadow();
 }
 
+#chatContainer {
+  display: block;
+  width: auto;
+  margin: 0 10px;
+  padding: 0;
+  background-color: #ffff00;
+}
+
 //User Section
 #userSection {
   display: inline-block;
+  width: auto;
   margin: 0;
   padding: 5px;
-  width: 40%;
+  float: left;
   background-color: @colourOne;
 }
 
 #userList {
+  margin: 0;
+  padding: 0;
   list-style: none;
 }
 
@@ -89,27 +117,31 @@ h1 {
 //Chat Section
 #chatSection {
   display: inline-block;
-  margin: 5px;
-  padding: 5px;
-  width: 40%;
+  float: right;
+  padding: 0;
+  width: auto;
   background-color: @colourOne;
 }
 
 #chatList {
+  margin: 0;
+  padding: 0;
   list-style: none;
 }
 
 .chatItem {
-
+  margin: 5px;
+  padding: 5px;
+  background-color: @colourFour;
 }
 
 //Message section
 #messageSection {
-
+  display: block;
 }
 
 #messageWindow {
-
+ width: 100%;
 }
 
 #sendButton {
