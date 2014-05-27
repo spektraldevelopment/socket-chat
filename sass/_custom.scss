@@ -1,0 +1,112 @@
+// Your custom SCSS should be written here...
+#mainSection {
+
+  #mainHeader {
+    h1 {
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+  #startScreen {
+
+    border: 1px solid #cecece;
+    height: auto;
+    padding: 10px;
+
+    div {
+      margin: 2px 0 0;
+      padding: 0;
+      textarea {
+        margin: 0;
+        height: 35px;
+      }
+    }
+
+    .join {
+      color: #fff;
+      width: 100px;
+      float: right;
+    }
+
+    .join:hover {
+      cursor: pointer;
+    }
+  }
+
+  #userSection {
+    @include respond(all-phones) {
+      height: 100px;
+      overflow-y: scroll;
+      margin-bottom: 10px;
+      border: 1px solid #cecece;
+    }
+    margin: 0;
+
+    #userList {
+      margin: 0;
+
+      li {
+        @include respond(all-phones) {
+          font-size: 1.5em;
+        }
+      }
+    }
+  }
+
+  #chatSection {
+    @include respond(all-phones) {
+      //Will figure out why math is not properly working at the moment
+      height: 300px;
+    }
+
+    border: 1px solid #b0b0b0;
+    height: 400px;
+    overflow-y: scroll;
+
+    #chatList {
+      .chatItem:nth-child(even) {background: #FFF}
+      .chatItem:nth-child(odd) {background: #eeeeee};
+
+      .chatItem {
+
+        padding: 10px;
+
+        .chatName {
+          font-size: 0.9em;
+        }
+
+        .chatMessage {
+          color: #000;
+        }
+
+        .chatTime {
+          font-size: 0.75em;
+          color: #b0b0b0;
+        }
+      }
+    }
+  }
+
+  #messageSection {
+    margin: 10px 0 0;
+
+    div {
+      textarea {
+        @include respond(all-phones) {
+          height: 35px;
+        }
+      }
+    }
+
+    .send {
+      width: 100px;
+      float: right;
+    }
+
+    .send:hover {
+      cursor: pointer;
+    }
+  }
+}
+
