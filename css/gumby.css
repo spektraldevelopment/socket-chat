@@ -1700,7 +1700,8 @@ table.rounded thead th, table.rounded thead td, table.rounded caption + tbody tr
 #mainSection #chatSection #chatList .chatItem .chatName { font-size: 0.9em; }
 #mainSection #chatSection #chatList .chatItem .chatMessage { color: #000; }
 #mainSection #chatSection #chatList .chatItem .chatTime { font-size: 0.75em; color: #b0b0b0; }
-#mainSection #messageSection { margin: 10px 0 0; }
+#mainSection #messageSection { margin: 10px 0 16px; }
+@media only screen and (max-width: 767px) { #mainSection #messageSection { margin: 10px 0 64px; } }
 @media only screen and (max-width: 767px) { #mainSection #messageSection div textarea { height: 35px; } }
 #mainSection #messageSection .send { width: 100px; float: right; }
 #mainSection #messageSection .send:hover { cursor: pointer; }
