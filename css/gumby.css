@@ -1688,6 +1688,9 @@ table.rounded thead th, table.rounded thead td, table.rounded caption + tbody tr
 #mainSection #startScreen div textarea { margin: 0; height: 35px; }
 #mainSection #startScreen .join { color: #fff; width: 100px; float: right; }
 #mainSection #startScreen .join:hover { cursor: pointer; }
+#mainSection #loadingSection { padding: 10px; }
+#mainSection #loadingSection p { text-align: center; }
+#mainSection #loadingSection #spinner { display: block; position: relative; width: 69px; margin: 0 auto; }
 #mainSection #userSection { margin: 0; }
 @media only screen and (max-width: 767px) { #mainSection #userSection { height: 100px; overflow-y: scroll; margin-bottom: 10px; border: 1px solid #cecece; } }
 #mainSection #userSection #userList { margin: 0; }

@@ -20,6 +20,7 @@
 
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
+    <link rel="stylesheet" href="css/font-awesome.min.css">
 	<link rel="stylesheet" href="css/gumby.css">
 
 	<script src="js/libs/modernizr-2.6.2.min.js"></script>
@@ -31,51 +32,57 @@
             <h1>Socket Chat</h1>
         </section>
 
-        <section id="userSection" class="three columns">
-            <ul id="userList">
-                <li><i class="icon-user"></i>Bill Paxton</li>
-                <li><i class="icon-user"></i>Bill Pullman</li>
-                <li><i class="icon-user"></i>User Three</li>
-                <li><i class="icon-user"></i>User Four</li>
-                <li><i class="icon-user"></i>Bill Paxton</li>
-                <li><i class="icon-user"></i>Bill Pullman</li>
-                <li><i class="icon-user"></i>User Three</li>
-                <li><i class="icon-user"></i>User Four</li>
-                <li><i class="icon-user"></i>User Three</li>
-                <li><i class="icon-user"></i>User Four</li>
-                <li><i class="icon-user"></i>User Four</li>
-            </ul>
-        </section>
+        <!--<section id="userSection" class="three columns">-->
+            <!--<ul id="userList">-->
+                <!--<li><i class="icon-user"></i>Bill Paxton</li>-->
+                <!--<li><i class="icon-user"></i>Bill Pullman</li>-->
+                <!--<li><i class="icon-user"></i>User Three</li>-->
+                <!--<li><i class="icon-user"></i>User Four</li>-->
+                <!--<li><i class="icon-user"></i>Bill Paxton</li>-->
+                <!--<li><i class="icon-user"></i>Bill Pullman</li>-->
+                <!--<li><i class="icon-user"></i>User Three</li>-->
+                <!--<li><i class="icon-user"></i>User Four</li>-->
+                <!--<li><i class="icon-user"></i>User Three</li>-->
+                <!--<li><i class="icon-user"></i>User Four</li>-->
+                <!--<li><i class="icon-user"></i>User Four</li>-->
+            <!--</ul>-->
+        <!--</section>-->
 
-        <section id="chatSection" class="nine columns">
-            <div id="chatList">
-                <div class="chatItem">
-                    <div class="chatName">Samuel L. Jackson</div>
-                    <div class="chatMessage">Now that there is the Tec-9, a crappy spray gun from South Miami. This gun is advertised as the most popular gun in American crime. Do you believe that shit? It actually says that in the little book that comes with it: the most popular gun in American crime. Like they're actually proud of that shit. </div>
-                    <div class="chatTime">8:00pm</div>
-                </div>
-                <div class="chatItem">
-                    <div class="chatName">Frank Underwood</div>
-                    <div class="chatMessage">Knock knock</div>
-                    <div class="chatTime">8:01pm</div>
-                </div>
-                <div class="chatItem">
-                    <div class="chatName">Walter White</div>
-                    <div class="chatMessage">Say my name.</div>
-                    <div class="chatTime">8:02pm</div>
-                </div>
+        <!--<section id="chatSection" class="nine columns">-->
+            <!--<div id="chatList">-->
+                <!--<div class="chatItem">-->
+                    <!--<div class="chatName">Samuel L. Jackson</div>-->
+                    <!--<div class="chatMessage">Now that there is the Tec-9, a crappy spray gun from South Miami. This gun is advertised as the most popular gun in American crime. Do you believe that shit? It actually says that in the little book that comes with it: the most popular gun in American crime. Like they're actually proud of that shit. </div>-->
+                    <!--<div class="chatTime">8:00pm</div>-->
+                <!--</div>-->
+                <!--<div class="chatItem">-->
+                    <!--<div class="chatName">Frank Underwood</div>-->
+                    <!--<div class="chatMessage">Knock knock</div>-->
+                    <!--<div class="chatTime">8:01pm</div>-->
+                <!--</div>-->
+                <!--<div class="chatItem">-->
+                    <!--<div class="chatName">Walter White</div>-->
+                    <!--<div class="chatMessage">Say my name.</div>-->
+                    <!--<div class="chatTime">8:02pm</div>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</section>-->
+
+        <!--<section id="messageSection" class="twelve columns">-->
+            <!--<div class="field">-->
+                <!--<textarea class="input textarea" placeholder="Say something"></textarea>-->
+            <!--</div>-->
+            <!--<button id="sendButton" type="button" class="pretty medium primary btn send">Send</button>-->
+        <!--</section>-->
+
+        <!--<section id="alertSection" class="row">-->
+            <!--<p id="alertField" class="primary alert">You are the first user to join the room. Share this url to a friend or wait for other users to join</p>-->
+        <!--</section>-->
+        <section id="loadingSection" class="centered four columns" style="border: 1px solid #cecece">
+            <p>Loading, please wait...</p>
+            <div id="spinner">
+                <i class="fa fa-refresh fa-spin fa-3x"></i>
             </div>
-        </section>
-
-        <section id="messageSection" class="twelve columns">
-            <div class="field">
-                <textarea class="input textarea" placeholder="Say something"></textarea>
-            </div>
-            <button id="sendButton" type="button" class="pretty medium primary btn send">Send</button>
-        </section>
-
-        <section id="alertSection" class="row">
-            <p id="alertField" class="primary alert">You are the first user to join the room. Share this url to a friend or wait for other users to join</p>
         </section>
 
         <!--<section id="startScreen" class="centered eight columns">-->

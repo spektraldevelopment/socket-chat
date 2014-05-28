@@ -34,6 +34,23 @@
     }
   }
 
+  #loadingSection {
+
+    padding: 10px;
+
+    p {
+      text-align: center;
+    }
+
+    #spinner {
+      display:  block;
+      position: relative;
+      width: 69px;
+      margin: 0 auto;
+    }
+
+  }
+
   #userSection {
     @include respond(all-phones) {
       height: 100px;
@@ -113,4 +130,6 @@
     }
   }
 }
+
+
 
