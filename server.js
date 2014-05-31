@@ -18,7 +18,7 @@ io.sockets.on('connection', function(socket) {
 
     console.log(io.sockets.clients('superroom'));
 
-    socket.emit('connected', { clientID: socket.id });
+    socket.emit('connected', { clientID: socket.id, list: io.sockets.clients('superroom')});
 
     socket.on('message', function(data) {
         socket.broadcast.to('superroom').emit('onmessage', { client: data.client, message: data.message } );

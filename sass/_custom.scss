@@ -1,4 +1,6 @@
 // Your custom SCSS should be written here...
+$errorColour:#ca3838;
+
 #mainSection {
 
   #mainHeader {
@@ -10,6 +12,9 @@
 
   #startScreen {
 
+    @include respond(all-phones) {
+      height: 105px;
+    }
     border: 1px solid #cecece;
     height: auto;
     padding: 10px;
@@ -17,13 +22,13 @@
     div {
       margin: 2px 0 0;
       padding: 0;
-      textarea {
-        margin: 0;
-        height: 35px;
-      }
+
     }
 
     .join {
+      @include respond(all-phones) {
+        margin-top: 10px;
+      }
       color: #fff;
       width: 100px;
       float: right;
@@ -34,7 +39,7 @@
     }
   }
 
-  #loadingSection {
+  #loadingScreen {
     margin-top: 20px;
     padding: 10px;
 
@@ -48,7 +53,6 @@
       width: 48px;
       margin: 0 auto;
     }
-
   }
 
   #userSection {
@@ -129,6 +133,26 @@
       cursor: pointer;
     }
   }
+}
+
+.inputError {
+  @extend %errorInput;
+}
+
+%errorInput::-webkit-input-placeholder {
+  color: $errorColour;
+}
+
+%errorInput:-moz-placeholder { /* Firefox 18- */
+  color: $errorColour;
+}
+
+%errorInput::-moz-placeholder {  /* Firefox 19+ */
+  color: $errorColour;
+}
+
+%errorInput:-ms-input-placeholder {
+  color: $errorColour;
 }
 
 

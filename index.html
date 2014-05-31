@@ -78,18 +78,18 @@
         <!--<section id="alertSection" class="row">-->
             <!--<p id="alertField" class="primary alert">You are the first user to join the room. Share this url to a friend or wait for other users to join</p>-->
         <!--</section>-->
-        <!--<section id="loadingSection" class="centered four columns">-->
-            <!--<p>Loading, please wait...</p>-->
-            <!--<div id="spinner">-->
-                <!--<i class="fa fa-refresh fa-spin fa-3x"></i>-->
-            <!--</div>-->
-        <!--</section>-->
+        <section id="loadingScreen" class="centered four columns hide">
+            <p>Loading, please wait...</p>
+            <div id="spinner">
+                <i class="fa fa-refresh fa-spin fa-3x"></i>
+            </div>
+        </section>
 
         <section id="startScreen" class="centered eight columns">
-            <div class="field nine columns">
-                <input class="input" type="text" placeholder="Enter A Chat Name" />
+            <div id="chatNameField" class="field nine columns">
+                <input id="chatNameInput" class="input" type="text" placeholder="Enter A Chat Name" />
             </div>
-            <button id="joinButton" type="button" class="pretty medium primary btn join">Join Chat</button>
+           <button id="joinButton" type="button" class="pretty medium primary btn join">Join Chat</button>
         </section>
     </section>
 
@@ -151,7 +151,7 @@
 	</script> -->
 
 	<script src="js/plugins.js"></script>
-	<script src="js/main.js"></script>
+	<script src="js/utils.js"></script>
     <script src="http://localhost:9999/socket.io/socket.io.js"></script>
     <script src="js/chat.js"></script>
 

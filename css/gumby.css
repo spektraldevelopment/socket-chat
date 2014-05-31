@@ -1684,13 +1684,14 @@ table.rounded thead th, table.rounded thead td, table.rounded caption + tbody tr
 
 #mainSection #mainHeader h1 { margin: 0; padding: 0; }
 #mainSection #startScreen { border: 1px solid #cecece; height: auto; padding: 10px; }
+@media only screen and (max-width: 767px) { #mainSection #startScreen { height: 105px; } }
 #mainSection #startScreen div { margin: 2px 0 0; padding: 0; }
-#mainSection #startScreen div textarea { margin: 0; height: 35px; }
 #mainSection #startScreen .join { color: #fff; width: 100px; float: right; }
+@media only screen and (max-width: 767px) { #mainSection #startScreen .join { margin-top: 10px; } }
 #mainSection #startScreen .join:hover { cursor: pointer; }
-#mainSection #loadingSection { margin-top: 20px; padding: 10px; }
-#mainSection #loadingSection p { text-align: center; }
-#mainSection #loadingSection #spinner { display: block; position: relative; width: 48px; margin: 0 auto; }
+#mainSection #loadingScreen { margin-top: 20px; padding: 10px; }
+#mainSection #loadingScreen p { text-align: center; }
+#mainSection #loadingScreen #spinner { display: block; position: relative; width: 48px; margin: 0 auto; }
 #mainSection #userSection { margin: 0; }
 @media only screen and (max-width: 767px) { #mainSection #userSection { height: 100px; overflow-y: scroll; margin-bottom: 10px; border: 1px solid #cecece; } }
 #mainSection #userSection #userList { margin: 0; }
@@ -1708,3 +1709,11 @@ table.rounded thead th, table.rounded thead td, table.rounded caption + tbody tr
 @media only screen and (max-width: 767px) { #mainSection #messageSection div textarea { height: 35px; } }
 #mainSection #messageSection .send { width: 100px; float: right; }
 #mainSection #messageSection .send:hover { cursor: pointer; }
+
+.inputError::-webkit-input-placeholder { color: #ca3838; }
+
+.inputError:-moz-placeholder { /* Firefox 18- */ color: #ca3838; }
+
+.inputError::-moz-placeholder { /* Firefox 19+ */ color: #ca3838; }
+
+.inputError:-ms-input-placeholder { color: #ca3838; }
