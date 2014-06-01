@@ -1,11 +1,13 @@
 var
     clientID, clientData = {}, clientList,
     iosocket = io.connect('http://localhost:9999'),
+    mainSection = document.querySelector("#mainSection"),
     startScreen = document.querySelector("#startScreen"),
     chatNameField = document.querySelector("#chatNameField"),
     chatNameInput = document.querySelector("#chatNameInput"),
     joinButton = document.querySelector("#joinButton"),
-    loadingScreen = document.querySelector("#loadingScreen");
+    loadingScreen = document.querySelector("#loadingScreen"),
+    loadingMessage = document.querySelector("#loadingMessage");
 
 //////////////////////////
 ////INIT
@@ -42,13 +44,20 @@ function onInputFocus(evt) {
 
 function submitUserName(name) {
     removeElement(startScreen);
-    showLoadingScreen();
+    showLoadingScreen('Joining room, one moment...');
 
     clientData['name'] = name;
+
+    iosocket.emit('join', { data: clientData } );
 }
 
-function showLoadingScreen() {
+//////////////////////////
+////LOADING SCREEN
+//////////////////////////
+function showLoadingScreen(msg) {
+    msg = msg || 'Loading, please wait...';
     loadingScreen.setAttribute('class', 'centered four columns');
+    loadingMessage.innerHTML = msg;
     log('showLoadingScreen');
 }
 
@@ -58,16 +67,38 @@ function hideLoadingScreen() {
 }
 
 //////////////////////////
+////CHAT
+//////////////////////////
+function initChat() {
+    log('initChatScreen');
+    initUserSection();
+    initChatSection();
+    initMessageSection();
+}
+
+function initUserSection() {
+    addElement(mainSection, 'section', { id: 'userSection', className: 'three columns'});
+}
+
+function initChatSection() {
+    addElement(mainSection, 'section', { id: 'chatSection', className: 'nine columns'});
+
+}
+
+function initMessageSection() {
+    addElement(mainSection, 'section', { id: 'messageSection', className: 'twelve columns'});
+}
+
+//////////////////////////
 ////IOSOCKET
 //////////////////////////
 iosocket.on('connected', function (data) {
     clientID = data.clientID;
     clientData['id'] = data.clientID;
 
-    clientList = data.list;
     //idField.innerHTML = "Your client ID is: " + clientID;
-    socketLog('ID: ' + clientID);
-    socketLog('Connected: ' + clientList);
+    socketLog('your ID is: ' + clientID);
+    socketLog('connected');
 });
 
 iosocket.on('onmessage', function (data) {
@@ -75,8 +106,12 @@ iosocket.on('onmessage', function (data) {
     //addToMessageBoard(data.client, data.message);
 });
 
-iosocket.on('arrived', function (data) {
-    socketLog(data + " has arrived!");
+iosocket.on('joined', function (data) {
+    hideLoadingScreen();
+    clientList = data.clientList;
+    socketLog(JSON.stringify(data.clientList));
+    initChat();
+    //socketLog(data + " has joined!");
 });
 
 iosocket.on('close', function () {

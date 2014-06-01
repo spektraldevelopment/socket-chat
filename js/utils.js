@@ -41,6 +41,26 @@ function attachEventListener(eventTarget, eventType, eventHandler) {
 }
 
 //////////////////
+////ADD ELEMENT
+/////////////////
+function addElement(parent, type, attrs) {
+
+    var
+        newElement = document.createElement(type),
+        className = getParameter(attrs, 'className', undefined),
+        id = getParameter(attrs, 'id', undefined);
+
+    if (className !== undefined) {
+        newElement.setAttribute('class', className);
+    }
+
+    if (id !== undefined) {
+        newElement.setAttribute('id', id);
+    }
+    parent.appendChild(newElement);
+}
+
+//////////////////
 ////REMOVE ELEMENT
 /////////////////
 function removeElement (element) {
@@ -49,6 +69,26 @@ function removeElement (element) {
     } catch (err) {
         element.parentNode.removeChild(element);
     }
+}
+
+////////////////////
+////GET PARAMETER
+////////////////////
+function getParameter (obj, val, defaultParam) {
+    var retrievedParam;
+    if (obj !== undefined) {
+        if (obj[val] === undefined) {
+            retrievedParam = defaultParam;
+            //console.log("getParameter: val was not found, setting to default.")
+        } else {
+            retrievedParam = obj[val];
+            //console.log("getParameter: val found.")
+        }
+    } else {
+        retrievedParam = defaultParam;
+        //console.log("getParameter: object was not defined, setting val to default.")
+    }
+    return retrievedParam;
 }
 
 //////////////////
