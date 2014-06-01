@@ -28,6 +28,7 @@ io.sockets.on('connection', function(socket) {
         clientArray.push(data);
         //emit to all users including sender
         socket.to('superroom').emit('joined', { clientList: clientArray });
+        socket.broadcast.to('superroom').emit('joined', { clientList: clientArray });
     });
 
     socket.on('message', function(data) {

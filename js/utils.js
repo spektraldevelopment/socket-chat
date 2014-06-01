@@ -58,6 +58,8 @@ function addElement(parent, type, attrs) {
         newElement.setAttribute('id', id);
     }
     parent.appendChild(newElement);
+
+    return newElement;
 }
 
 //////////////////

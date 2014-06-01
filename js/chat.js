@@ -1,5 +1,5 @@
 var
-    clientID, clientData = {}, clientList,
+    clientID, clientData = {}, clientArray, chatInitialized = false,
     iosocket = io.connect('http://localhost:9999'),
     mainSection = document.querySelector("#mainSection"),
     startScreen = document.querySelector("#startScreen"),
@@ -77,7 +77,24 @@ function initChat() {
 }
 
 function initUserSection() {
-    addElement(mainSection, 'section', { id: 'userSection', className: 'three columns'});
+    var
+        userSection = addElement(mainSection, 'section', { id: 'userSection', className: 'three columns'}),
+        userList = addElement(userSection, 'ul', { id: 'userList'});
+
+    refreshUserList();
+}
+
+function refreshUserList() {
+    var i, userItem, icon, uList = document.querySelector('#userList');
+
+    //clear user list
+    uList.innerHTML = '';
+
+    for (i = 0; i < clientArray.length; i += 1) {
+        userItem = addElement(uList, 'li');
+        icon = addElement(userItem, 'i', { className: 'icon-user' });
+        userItem.innerHTML += clientArray[i].data.name;
+    }
 }
 
 function initChatSection() {
@@ -108,10 +125,16 @@ iosocket.on('onmessage', function (data) {
 
 iosocket.on('joined', function (data) {
     hideLoadingScreen();
-    clientList = data.clientList;
-    socketLog(JSON.stringify(data.clientList));
-    initChat();
-    //socketLog(data + " has joined!");
+    clientArray = data.clientList;
+    //socketLog("clientArray: " + clientArray);
+
+    if (chatInitialized === false) {
+        initChat();
+        chatInitialized = true;
+    } else {
+        refreshUserList();
+    }
+    socketLog("users joined: " + clientArray.length);
 });
 
 iosocket.on('close', function () {
