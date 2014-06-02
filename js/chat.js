@@ -1,5 +1,6 @@
 var
     clientID, clientData = {}, clientArray, chatInitialized = false,
+    messageArray = [],
     iosocket = io.connect('http://localhost:9999'),
     mainSection = document.querySelector("#mainSection"),
     startScreen = document.querySelector("#startScreen"),
@@ -67,7 +68,7 @@ function hideLoadingScreen() {
 }
 
 //////////////////////////
-////CHAT
+////INIT CHAT
 //////////////////////////
 function initChat() {
     log('initChatScreen');
@@ -76,6 +77,9 @@ function initChat() {
     initMessageSection();
 }
 
+//////////////////////////
+////USER SECTION
+//////////////////////////
 function initUserSection() {
     var
         userSection = addElement(mainSection, 'section', { id: 'userSection', className: 'three columns'}),
@@ -97,13 +101,28 @@ function refreshUserList() {
     }
 }
 
+//////////////////////////
+////INIT CHAT SECTION
+//////////////////////////
 function initChatSection() {
     addElement(mainSection, 'section', { id: 'chatSection', className: 'nine columns'});
+    addElement(chatSection, 'div', { id: 'chatList'});
 
+    if (messageArray.length > 0) {
+        //There are already messages, add them to the board
+    }
 }
 
+//////////////////////////
+////INIT MESSAGE SECTION
+//////////////////////////
 function initMessageSection() {
-    addElement(mainSection, 'section', { id: 'messageSection', className: 'twelve columns'});
+    var
+        messageSection = addElement(mainSection, 'section', { id: 'messageSection', className: 'twelve columns'}),
+        messageContainer = addElement(messageSection, 'div', { className: 'field' });
+
+    addElement(messageContainer, 'textarea', { id: 'messageField', className: 'input textarea', placeholder: 'Say something'});
+    addElement(messageSection, 'button', { id: 'sendButton', type: 'button', className: 'pretty medium primary btn send', innerHTML: 'Send'});
 }
 
 //////////////////////////
@@ -126,7 +145,7 @@ iosocket.on('onmessage', function (data) {
 iosocket.on('joined', function (data) {
     hideLoadingScreen();
     clientArray = data.clientList;
-    //socketLog("clientArray: " + clientArray);
+    messageArray = data.messages;
 
     if (chatInitialized === false) {
         initChat();

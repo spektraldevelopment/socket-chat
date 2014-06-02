@@ -45,20 +45,17 @@ function attachEventListener(eventTarget, eventType, eventHandler) {
 /////////////////
 function addElement(parent, type, attrs) {
 
-    var
-        newElement = document.createElement(type),
-        className = getParameter(attrs, 'className', undefined),
-        id = getParameter(attrs, 'id', undefined);
-
-    if (className !== undefined) {
-        newElement.setAttribute('class', className);
-    }
-
-    if (id !== undefined) {
-        newElement.setAttribute('id', id);
+    var newElement = document.createElement(type), key;
+    for (key in attrs) {
+        if (key === 'className') {
+            newElement.setAttribute('class', attrs[key]);
+        } else if (key === 'innerHTML') {
+            newElement.innerHTML = attrs[key];
+        } else {
+            newElement.setAttribute(key, attrs[key]);
+        }
     }
     parent.appendChild(newElement);
-
     return newElement;
 }
 

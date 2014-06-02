@@ -3,7 +3,7 @@ var
     server = require('http').createServer(app),
     io = require('socket.io').listen(server),
     clientList = io.sockets.clients('superroom'),
-    clientArray = [];
+    clientArray = [], messageArray =[];
 
 server.listen(9999);
 
@@ -27,12 +27,13 @@ io.sockets.on('connection', function(socket) {
         socket.join('superroom');
         clientArray.push(data);
         //emit to all users including sender
-        socket.to('superroom').emit('joined', { clientList: clientArray });
-        socket.broadcast.to('superroom').emit('joined', { clientList: clientArray });
+        socket.to('superroom').emit('joined', { clientList: clientArray, messages: messageArray });
+        socket.broadcast.to('superroom').emit('joined', { clientList: clientArray, messages: messageArray });
     });
 
     socket.on('message', function(data) {
         //send message to everyone except sender
+        messageArray.push(data);
         socket.broadcast.to('superroom').emit('onmessage', { client: data.client, message: data.message } );
         console.log('Server: message: ' + data.message);
     });
