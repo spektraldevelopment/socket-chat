@@ -2,8 +2,7 @@ var
     app = require('express')(),
     server = require('http').createServer(app),
     io = require('socket.io').listen(server),
-    clientList = io.sockets.clients('superroom'),
-    clientArray = [], messageArray =[];
+    clientArray = [], messageArray =[], clientList;
 
 server.listen(9999);
 
@@ -13,21 +12,15 @@ app.get('/', function(req, res) {
 
 io.sockets.on('connection', function(socket) {
 
-//    socket.join('superroom');
-//
-//    socket.broadcast.to('superroom').emit('arrived', socket.id);
-//
-//    console.log('CLIENTS:!!!!!!!')
-//    console.log(io.sockets.clients('superroom').length);
-
     socket.emit('connected', { clientID: socket.id });
 
     socket.on('join', function(data) {
-        console.log('joined: ' + JSON.stringify(data));
+        console.log('joined: ' + data.data.name);
+        socket.userData = data.data;
         socket.join('superroom');
-        clientArray.push(data);
+
         //emit to all users including sender
-        socket.to('superroom').emit('joined', { clientList: clientArray, messages: messageArray });
+        socket.to('superroom').emit('joined', { clientList: getClientList(), messages: messageArray });
         socket.broadcast.to('superroom').emit('joined', { clientList: clientArray, messages: messageArray });
     });
 
@@ -37,6 +30,30 @@ io.sockets.on('connection', function(socket) {
         socket.broadcast.to('superroom').emit('onmessage', { client: data.client, message: data.message } );
         console.log('Server: message: ' + data.message);
     });
+
+    socket.on('disconnect', function(data) {
+
+        console.log('User disconnected');
+
+
+        socket.broadcast.to('superroom').emit('userleft', { clientList: getClientList() });
+    });
+
+    socket.on('close', function(data) {
+        console.log('Close Connection: ' + data.client);
+    });
+
+    function getClientList() {
+        clientList = io.sockets.clients('superroom');
+
+        //Clear array and refresh it
+        clientArray = [];
+        clientList.forEach(function(client) {
+            clientArray.push(client.userData);
+        });
+        console.log('getClientList: ' + clientArray);
+        return clientArray;
+    }
 });
 
 

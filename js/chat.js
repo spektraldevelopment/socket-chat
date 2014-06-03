@@ -94,10 +94,12 @@ function refreshUserList() {
     //clear user list
     uList.innerHTML = '';
 
+    console.log('clientArray: ' + clientArray);
+
     for (i = 0; i < clientArray.length; i += 1) {
         userItem = addElement(uList, 'li');
         icon = addElement(userItem, 'i', { className: 'icon-user' });
-        userItem.innerHTML += clientArray[i].data.name;
+        userItem.innerHTML += clientArray[i].name;
     }
 }
 
@@ -148,15 +150,24 @@ iosocket.on('joined', function (data) {
     messageArray = data.messages;
 
     if (chatInitialized === false) {
+        socketLog('initChat');
         initChat();
         chatInitialized = true;
     } else {
+        socketLog('refreshUserList');
         refreshUserList();
     }
     socketLog("users joined: " + clientArray.length);
 });
 
+iosocket.on('userleft', function (data) {
+    clientArray = data.clientList;
+    refreshUserList();
+    socketLog('User left the room')
+});
+
 iosocket.on('close', function () {
+    iosocket.emit('close', { client: clientData } );
     socketLog('Connection close');
 });
 
