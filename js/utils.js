@@ -91,6 +91,30 @@ function getParameter (obj, val, defaultParam) {
 }
 
 //////////////////
+////GET STYLE
+//////////////////
+function getStyle(element, styleProperty) {
+
+    styleProperty = styleProperty || undefined;
+    var style;
+    if(styleProperty !== undefined) {
+        try {
+            style = element.currentStyle[styleProperty];
+        } catch (err) {
+            style = document.defaultView.getComputedStyle(element, null).getPropertyValue(styleProperty);
+        }
+    }
+    return style;
+}
+
+//////////////////
+////STRING TO NUM
+//////////////////
+function stringToNum(str) {
+    return parseInt(str, 10);
+}
+
+//////////////////
 ////LOG
 /////////////////
 function log (msg, type) {
@@ -106,6 +130,9 @@ function log (msg, type) {
     }
 }
 
+//////////////////
+////SOCKET LOG
+/////////////////
 function socketLog(msg) {
     console.log('Socket Server: ' + msg);
 }

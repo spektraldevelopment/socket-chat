@@ -8,7 +8,8 @@ var
     chatNameInput = document.querySelector("#chatNameInput"),
     joinButton = document.querySelector("#joinButton"),
     loadingScreen = document.querySelector("#loadingScreen"),
-    loadingMessage = document.querySelector("#loadingMessage");
+    loadingMessage = document.querySelector("#loadingMessage"),
+    chatList;
 
 //////////////////////////
 ////INIT
@@ -46,9 +47,7 @@ function onInputFocus(evt) {
 function submitUserName(name) {
     removeElement(startScreen);
     showLoadingScreen('Joining room, one moment...');
-
     clientData['name'] = name;
-
     iosocket.emit('join', { data: clientData } );
 }
 
@@ -107,12 +106,36 @@ function refreshUserList() {
 ////INIT CHAT SECTION
 //////////////////////////
 function initChatSection() {
+    var i;
     addElement(mainSection, 'section', { id: 'chatSection', className: 'nine columns'});
-    addElement(chatSection, 'div', { id: 'chatList'});
+    chatList = addElement(chatSection, 'div', { id: 'chatList'});
 
     if (messageArray.length > 0) {
         //There are already messages, add them to the board
+        for (i = 0; i < messageArray.length; i += 1) {
+            addToChatList(messageArray[i].client, messageArray[i].message);
+        }
     }
+}
+
+function addToChatList(client, msg) {
+    var item = addElement(chatList, 'div', { className: 'chatItem'});
+
+    addElement(item, 'div', { className: 'chatName', innerHTML: client });
+    addElement(item, 'div', { className: 'chatMessage', innerHTML: msg });
+    addElement(item, 'div', { className: 'chatTime', innerHTML: '8:00pm' });
+
+    //Not working at the moment, will look into later
+    //scrollToLastItem();
+}
+
+function scrollToLastItem() {
+    var chatChildren = chatList.children, i, totalChatHeight = 0;
+    for (i = 0; i < chatChildren.length; i += 1) {
+        totalChatHeight += stringToNum(getStyle(chatChildren[i], 'height'));
+    }
+    console.log('totalChatHeight:  ' + totalChatHeight);
+    chatList.scrollTop = -totalChatHeight;
 }
 
 //////////////////////////
@@ -121,10 +144,14 @@ function initChatSection() {
 function initMessageSection() {
     var
         messageSection = addElement(mainSection, 'section', { id: 'messageSection', className: 'twelve columns'}),
-        messageContainer = addElement(messageSection, 'div', { className: 'field' });
+        messageContainer = addElement(messageSection, 'div', { className: 'field' }),
+        messageField =  addElement(messageContainer, 'textarea', { id: 'messageField', className: 'input textarea', placeholder: 'Say something'}),
+        sendButton = addElement(messageSection, 'button', { id: 'sendButton', type: 'button', className: 'pretty medium primary btn send', innerHTML: 'Send'});
 
-    addElement(messageContainer, 'textarea', { id: 'messageField', className: 'input textarea', placeholder: 'Say something'});
-    addElement(messageSection, 'button', { id: 'sendButton', type: 'button', className: 'pretty medium primary btn send', innerHTML: 'Send'});
+    attachEventListener(sendButton, 'click', function(){
+        addToChatList(clientData.name, messageField.value);
+        iosocket.emit('message', { client: clientData.name, message: messageField.value });
+    });
 }
 
 //////////////////////////
@@ -140,7 +167,7 @@ iosocket.on('connected', function (data) {
 
 iosocket.on('onmessage', function (data) {
     socketLog("Message received: " + data.message);
-    //addToMessageBoard(data.client, data.message);
+    addToChatList(data.client, data.message);
 });
 
 iosocket.on('joined', function (data) {
