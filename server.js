@@ -34,13 +34,8 @@ io.sockets.on('connection', function(socket) {
     socket.on('disconnect', function(data) {
 
         console.log('User disconnected');
-
-
+        socket.leave('superroom');
         socket.broadcast.to('superroom').emit('userleft', { clientList: getClientList() });
-    });
-
-    socket.on('close', function(data) {
-        console.log('Close Connection: ' + data.client);
     });
 
     function getClientList() {

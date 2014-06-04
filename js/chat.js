@@ -134,7 +134,6 @@ iosocket.on('connected', function (data) {
     clientID = data.clientID;
     clientData['id'] = data.clientID;
 
-    //idField.innerHTML = "Your client ID is: " + clientID;
     socketLog('your ID is: ' + clientID);
     socketLog('connected');
 });
@@ -163,12 +162,7 @@ iosocket.on('joined', function (data) {
 iosocket.on('userleft', function (data) {
     clientArray = data.clientList;
     refreshUserList();
-    socketLog('User left the room')
-});
-
-iosocket.on('close', function () {
-    iosocket.emit('close', { client: clientData } );
-    socketLog('Connection close');
+    socketLog('User left the room: ' + clientArray);
 });
 
 //Constructor
