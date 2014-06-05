@@ -108,7 +108,7 @@ function refreshUserList() {
 function initChatSection() {
     var i;
     addElement(mainSection, 'section', { id: 'chatSection', className: 'nine columns'});
-    chatList = addElement(chatSection, 'div', { id: 'chatList'});
+    chatList = addElement(chatSection, 'ul', { id: 'chatList'});
 
     if (messageArray.length > 0) {
         //There are already messages, add them to the board
@@ -119,7 +119,7 @@ function initChatSection() {
 }
 
 function addToChatList(client, msg) {
-    var item = addElement(chatList, 'div', { className: 'chatItem'});
+    var item = addElement(chatList, 'li', { className: 'chatItem'});
 
     addElement(item, 'div', { className: 'chatName', innerHTML: client });
     addElement(item, 'div', { className: 'chatMessage', innerHTML: msg });
@@ -127,6 +127,9 @@ function addToChatList(client, msg) {
 
     //Not working at the moment, will look into later
     //scrollToLastItem();
+    chatList.scrollTop = chatList.scrollHeight;
+    //$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
+    console.log('scrollHeight: ' + chatList.scrollHeight);
 }
 
 function scrollToLastItem() {
@@ -135,7 +138,8 @@ function scrollToLastItem() {
         totalChatHeight += stringToNum(getStyle(chatChildren[i], 'height'));
     }
     console.log('totalChatHeight:  ' + totalChatHeight);
-    chatList.scrollTop = -totalChatHeight;
+    console.log('chatList: ' + chatList);
+    chatList.scrollTop = totalChatHeight;
 }
 
 //////////////////////////
