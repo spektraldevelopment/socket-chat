@@ -9,7 +9,7 @@ var
     joinButton = document.querySelector("#joinButton"),
     loadingScreen = document.querySelector("#loadingScreen"),
     loadingMessage = document.querySelector("#loadingMessage"),
-    chatList;
+    chatList, alertSection;
 
 //////////////////////////
 ////INIT
@@ -126,20 +126,9 @@ function addToChatList(client, msg) {
     addElement(item, 'div', { className: 'chatTime', innerHTML: '8:00pm' });
 
     //Not working at the moment, will look into later
-    //scrollToLastItem();
-    chatList.scrollTop = chatList.scrollHeight;
-    //$("#chatList").scrollTop($("#chatList")[0].scrollHeight);
+    //chatList.scrollTop = chatList.scrollHeight;
+    $("#chatList").scrollTop($("#chatList")[0].scrollHeight);
     console.log('scrollHeight: ' + chatList.scrollHeight);
-}
-
-function scrollToLastItem() {
-    var chatChildren = chatList.children, i, totalChatHeight = 0;
-    for (i = 0; i < chatChildren.length; i += 1) {
-        totalChatHeight += stringToNum(getStyle(chatChildren[i], 'height'));
-    }
-    console.log('totalChatHeight:  ' + totalChatHeight);
-    console.log('chatList: ' + chatList);
-    chatList.scrollTop = totalChatHeight;
 }
 
 //////////////////////////
@@ -156,6 +145,17 @@ function initMessageSection() {
         addToChatList(clientData.name, messageField.value);
         iosocket.emit('message', { client: clientData.name, message: messageField.value });
     });
+}
+
+//////////////////////////
+////INIT ALERT SECTION
+//////////////////////////
+function initAlertSection() {
+    alertSection = addElement(mainSection, 'section', { id: 'alertSection', className: 'row' });
+}
+
+function addAlert(msg) {
+    addElement(alertSection, 'p', { id: 'alertField', className: 'primary alert', innerHTML: msg });
 }
 
 //////////////////////////
