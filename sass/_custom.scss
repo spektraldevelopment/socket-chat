@@ -3,6 +3,8 @@ $errorColour:#ca3838;
 
 #mainSection {
 
+  background-color: #fdfdfd;
+
   #mainHeader {
     h1 {
       margin: 0;
@@ -86,6 +88,7 @@ $errorColour:#ca3838;
     overflow-y: scroll;
 
     #chatList {
+
       .chatItem:nth-child(even) {background: #FFF}
       .chatItem:nth-child(odd) {background: #eeeeee};
 
@@ -122,10 +125,6 @@ $errorColour:#ca3838;
           height: 35px;
         }
       }
-    }
-
-    button {
-      color: #fff;
     }
 
     .send {

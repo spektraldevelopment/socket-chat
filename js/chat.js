@@ -9,7 +9,7 @@ var
     joinButton = document.querySelector("#joinButton"),
     loadingScreen = document.querySelector("#loadingScreen"),
     loadingMessage = document.querySelector("#loadingMessage"),
-    chatList, alertSection;
+    chatSection, chatList, alertSection;
 
 //////////////////////////
 ////INIT
@@ -107,7 +107,7 @@ function refreshUserList() {
 //////////////////////////
 function initChatSection() {
     var i;
-    addElement(mainSection, 'section', { id: 'chatSection', className: 'nine columns'});
+    chatSection = addElement(mainSection, 'section', { id: 'chatSection'});
     chatList = addElement(chatSection, 'ul', { id: 'chatList'});
 
     if (messageArray.length > 0) {
@@ -119,16 +119,13 @@ function initChatSection() {
 }
 
 function addToChatList(client, msg) {
-    var item = addElement(chatList, 'li', { className: 'chatItem'});
+    var item = addElement(chatList, 'li', { className: 'chatItem' });
 
     addElement(item, 'div', { className: 'chatName', innerHTML: client });
     addElement(item, 'div', { className: 'chatMessage', innerHTML: msg });
     addElement(item, 'div', { className: 'chatTime', innerHTML: '8:00pm' });
 
-    //Not working at the moment, will look into later
-    //chatList.scrollTop = chatList.scrollHeight;
-    $("#chatList").scrollTop($("#chatList")[0].scrollHeight);
-    console.log('scrollHeight: ' + chatList.scrollHeight);
+    chatSection.scrollTop = chatSection.scrollHeight;
 }
 
 //////////////////////////
