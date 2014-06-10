@@ -2,6 +2,7 @@ var
     app = require('express')(),
     server = require('http').createServer(app),
     io = require('socket.io').listen(server),
+    socketioVersion = require('socket.io').version,
     clientArray = [], messageArray =[], clientList;
 
 server.listen(9999);
@@ -11,6 +12,8 @@ app.get('/', function(req, res) {
 });
 
 io.sockets.on('connection', function(socket) {
+
+    console.log("socketioVersion: " + socketioVersion);
 
     socket.emit('connected', { clientID: socket.id });
 
