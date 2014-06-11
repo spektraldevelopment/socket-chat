@@ -23,8 +23,9 @@ io.sockets.on('connection', function(socket) {
         socket.join('superroom');
 
         //emit to all users including sender
-        socket.to('superroom').emit('joined', { clientList: getClientList(), messages: messageArray });
-        socket.broadcast.to('superroom').emit('joined', { clientList: clientArray, messages: messageArray });
+//        socket.to('superroom').emit('joined', { clientList: getClientList(), messages: messageArray });
+//        socket.broadcast.to('superroom').emit('joined', { clientList: getClientList(), messages: messageArray });
+
     });
 
     socket.on('message', function(data) {
@@ -42,13 +43,20 @@ io.sockets.on('connection', function(socket) {
     });
 
     function getClientList() {
-        clientList = io.sockets.clients('superroom');
+        //clientList = io.sockets.clients('superroom');
+        clientList = io.sockets.adapter.rooms['superroom'];
+        console.log('clientList.length: ' + clientList.length);
 
         //Clear array and refresh it
         clientArray = [];
-        clientList.forEach(function(client) {
-            clientArray.push(client.userData);
-        });
+//        clientList.forEach(function(client) {
+//            clientArray.push(client.userData);
+//        });
+        for (var clientId in clientList) {
+            //console.log(io.sockets.connected[clientId]);
+            clientArray.push(io.sockets.connected[clientId].userData);
+        }
+
         console.log('getClientList: ' + clientArray);
         return clientArray;
     }
