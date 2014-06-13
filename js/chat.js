@@ -172,7 +172,8 @@ iosocket.on('onmessage', function (data) {
 });
 
 iosocket.on('joined', function (data) {
-    console.log('JOINED!!!');
+    socketLog('New client has joined: ' + data.newClient);
+    
     hideLoadingScreen();
     clientArray = data.clientList;
     messageArray = data.messages;

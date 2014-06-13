@@ -13,7 +13,7 @@ app.get('/', function(req, res) {
 
 io.sockets.on('connection', function(socket) {
 
-    console.log("socketioVersion: " + socketioVersion);
+    //console.log("socketioVersion: " + socketioVersion);
 
     socket.emit('connected', { clientID: socket.id });
 
@@ -23,8 +23,7 @@ io.sockets.on('connection', function(socket) {
         socket.join('superroom');
 
         //emit to all users including sender
-//        socket.to('superroom').emit('joined', { clientList: getClientList(), messages: messageArray });
-//        socket.broadcast.to('superroom').emit('joined', { clientList: getClientList(), messages: messageArray });
+        io.to('superroom').emit('joined', { newClient: data.data.name, clientList: getClientList(), messages: messageArray});
 
     });
 
@@ -45,19 +44,11 @@ io.sockets.on('connection', function(socket) {
     function getClientList() {
         //clientList = io.sockets.clients('superroom');
         clientList = io.sockets.adapter.rooms['superroom'];
-        console.log('clientList.length: ' + clientList.length);
-
         //Clear array and refresh it
         clientArray = [];
-//        clientList.forEach(function(client) {
-//            clientArray.push(client.userData);
-//        });
         for (var clientId in clientList) {
-            //console.log(io.sockets.connected[clientId]);
             clientArray.push(io.sockets.connected[clientId].userData);
         }
-
-        console.log('getClientList: ' + clientArray);
         return clientArray;
     }
 });

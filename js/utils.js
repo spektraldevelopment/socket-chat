@@ -118,21 +118,24 @@ function stringToNum(str) {
 ////LOG
 /////////////////
 function log (msg, type) {
-    var id = 'SocketChat';
+    //console.group('SocketChat');
     if (type === 'dir') {
         console.dir(msg);
     } else if (type === 'warn') {
-        console.warn(id + " : " + msg);
+        console.warn(msg);
     } else if (type === 'error'){
-        console.error(id + " : " + msg);
+        console.error(msg);
     } else {
-        console.log(id + " : " + msg);
+        console.log(msg);
     }
+    //console.groupEnd();
 }
 
 //////////////////
 ////SOCKET LOG
 /////////////////
 function socketLog(msg) {
-    console.log('Socket Server: ' + msg);
+    console.group('Socket Server');
+    console.log(msg);
+    console.groupEnd();
 }
