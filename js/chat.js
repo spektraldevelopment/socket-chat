@@ -137,7 +137,7 @@ function initMessageSection() {
         messageContainer = addElement(messageSection, 'div', { className: 'field' }),
         messageField =  addElement(messageContainer, 'textarea', { id: 'messageField', className: 'input textarea', placeholder: 'Say something'}),
         sendButton = addElement(messageSection, 'button', { id: 'sendButton', type: 'button', className: 'pretty medium primary btn send', innerHTML: 'Send'}),
-        userListItem = document.querySelector('#user-' + clientData.id), typingIcon = false, typingTimeout;
+        userListItem = document.querySelector('#user-' + clientData.id), typingIcon = false, typingTimeout = false, uliChildren, i;
 
     attachEventListener(sendButton, 'click', function(evt) {
         addToChatList(clientData.name, messageField.value);
@@ -146,14 +146,23 @@ function initMessageSection() {
 
     attachEventListener(messageField, 'keydown', function(evt) {
         //If key down, clear typingTimeout
+        clearTimeout(typingTimeout);
+        
         if (typingIcon === false) {
             typingIcon = addElement(userListItem, 'i', { className: 'icon-pencil' });
         }
     });
 
     attachEventListener(messageField, 'keyup', function(evt) {
+        //If using is no longer typing, remove pencil icon
         typingTimeout = setTimeout(function () {
-            //remove icon
+            uliChildren = userListItem.children;
+            for (i = 0; i < uliChildren.length; i += 1) {
+                if (uliChildren[i].className === 'icon-pencil') {
+                    uliChildren[i].remove();
+                    typingIcon = false;
+                }
+            }
         }, 2000);
     });
 }
