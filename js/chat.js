@@ -36,7 +36,6 @@ function onJoinClick (evt) {
         chatNameInput.setAttribute('class', 'input');
         submitUserName(chatName);
     }
-   log("chatName: " + chatName);
 }
 
 function onInputFocus(evt) {
@@ -96,7 +95,8 @@ function refreshUserList() {
     console.log('clientArray: ' + clientArray);
 
     for (i = 0; i < clientArray.length; i += 1) {
-        userItem = addElement(uList, 'li');
+        userItem = addElement(uList, 'li', { id: "user-" + clientArray[i].id });
+        userItem.setAttribute('data-username', clientArray[i].name );
         icon = addElement(userItem, 'i', { className: 'icon-user' });
         userItem.innerHTML += clientArray[i].name;
     }
@@ -136,11 +136,25 @@ function initMessageSection() {
         messageSection = addElement(mainSection, 'section', { id: 'messageSection', className: 'twelve columns'}),
         messageContainer = addElement(messageSection, 'div', { className: 'field' }),
         messageField =  addElement(messageContainer, 'textarea', { id: 'messageField', className: 'input textarea', placeholder: 'Say something'}),
-        sendButton = addElement(messageSection, 'button', { id: 'sendButton', type: 'button', className: 'pretty medium primary btn send', innerHTML: 'Send'});
+        sendButton = addElement(messageSection, 'button', { id: 'sendButton', type: 'button', className: 'pretty medium primary btn send', innerHTML: 'Send'}),
+        userListItem = document.querySelector('#user-' + clientData.id), typingIcon = false, typingTimeout;
 
-    attachEventListener(sendButton, 'click', function(){
+    attachEventListener(sendButton, 'click', function(evt) {
         addToChatList(clientData.name, messageField.value);
         iosocket.emit('message', { client: clientData.name, message: messageField.value });
+    });
+
+    attachEventListener(messageField, 'keydown', function(evt) {
+        //If key down, clear typingTimeout
+        if (typingIcon === false) {
+            typingIcon = addElement(userListItem, 'i', { className: 'icon-pencil' });
+        }
+    });
+
+    attachEventListener(messageField, 'keyup', function(evt) {
+        typingTimeout = setTimeout(function () {
+            //remove icon
+        }, 2000);
     });
 }
 
@@ -173,7 +187,7 @@ iosocket.on('onmessage', function (data) {
 
 iosocket.on('joined', function (data) {
     socketLog('New client has joined: ' + data.newClient);
-    
+
     hideLoadingScreen();
     clientArray = data.clientList;
     messageArray = data.messages;
