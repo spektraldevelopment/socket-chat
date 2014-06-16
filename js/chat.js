@@ -9,7 +9,7 @@ var
     joinButton = document.querySelector("#joinButton"),
     loadingScreen = document.querySelector("#loadingScreen"),
     loadingMessage = document.querySelector("#loadingMessage"),
-    chatSection, chatList, alertSection, typingIcon;
+    chatSection, chatList, alertSection, typingIcon, typingUser;
 
 //////////////////////////
 ////INIT
@@ -150,13 +150,14 @@ function initMessageSection() {
 
     attachEventListener(messageField, 'keydown', function(evt) {
         //If key down, clear typingTimeout
-        console.log('typing');
         elementShow(typingIcon);
+        iosocket.emit('keydown', { data: clientData } );
     });
 
     attachEventListener(messageField, 'keyup', function(evt) {
         //If using is no longer typing, remove pencil icon
         elementHide(typingIcon);
+        iosocket.emit('keyup', { data: clientData } );
     });
 }
 
@@ -185,6 +186,18 @@ iosocket.on('connected', function (data) {
 iosocket.on('onmessage', function (data) {
     socketLog("Message received: " + data.message);
     addToChatList(data.client, data.message);
+});
+
+iosocket.on('onkeydown', function(data) {
+    //socketLog('On keydown: data.name: ' + data.clientData.data.name);
+    typingUser = document.querySelector('#user-' + data.clientData.data.id).querySelector('.icon-pencil');
+    elementShow(typingUser);
+});
+
+iosocket.on('onkeyup', function(data) {
+    //socketLog('On keyup: data.name: ' + data.clientData.data.name);
+    typingUser = document.querySelector('#user-' + data.clientData.data.id).querySelector('.icon-pencil');;
+    elementHide(typingUser);
 });
 
 iosocket.on('joined', function (data) {

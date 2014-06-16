@@ -13,12 +13,10 @@ app.get('/', function(req, res) {
 
 io.sockets.on('connection', function(socket) {
 
-    //console.log("socketioVersion: " + socketioVersion);
-
     socket.emit('connected', { clientID: socket.id });
 
     socket.on('join', function(data) {
-        console.log('joined: ' + data.data.name);
+        console.log('Server: joined: ' + data.data.name);
         socket.userData = data.data;
         socket.join('superroom');
 
@@ -34,15 +32,23 @@ io.sockets.on('connection', function(socket) {
         console.log('Server: message: ' + data.message);
     });
 
-    socket.on('disconnect', function(data) {
+    socket.on('keydown', function(data) {
+        socket.broadcast.to('superroom').emit('onkeydown', { clientData: data } );
+        //console.log('Server: keydown');
+    });
 
-        console.log('User disconnected');
+    socket.on('keyup', function(data) {
+        socket.broadcast.to('superroom').emit('onkeyup', { clientData: data } );
+        //console.log('Server: keyup');
+    });
+
+    socket.on('disconnect', function(data) {
+        console.log('Server: User disconnected');
         socket.leave('superroom');
         socket.broadcast.to('superroom').emit('userleft', { clientList: getClientList() });
     });
 
     function getClientList() {
-        //clientList = io.sockets.clients('superroom');
         clientList = io.sockets.adapter.rooms['superroom'];
         //Clear array and refresh it
         clientArray = [];
