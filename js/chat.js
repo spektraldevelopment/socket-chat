@@ -9,7 +9,7 @@ var
     joinButton = document.querySelector("#joinButton"),
     loadingScreen = document.querySelector("#loadingScreen"),
     loadingMessage = document.querySelector("#loadingMessage"),
-    chatSection, chatList, alertSection;
+    chatSection, chatList, alertSection, typingIcon;
 
 //////////////////////////
 ////INIT
@@ -87,7 +87,7 @@ function initUserSection() {
 }
 
 function refreshUserList() {
-    var i, userItem, icon, uList = document.querySelector('#userList');
+    var i, userItem, uList = document.querySelector('#userList'), localUser;
 
     //clear user list
     uList.innerHTML = '';
@@ -97,9 +97,13 @@ function refreshUserList() {
     for (i = 0; i < clientArray.length; i += 1) {
         userItem = addElement(uList, 'li', { id: "user-" + clientArray[i].id });
         userItem.setAttribute('data-username', clientArray[i].name );
-        icon = addElement(userItem, 'i', { className: 'icon-user' });
+        addElement(userItem, 'i', { className: 'icon-user' });
         userItem.innerHTML += clientArray[i].name;
+        addElement(userItem, 'i', { className: 'icon-pencil hide'});
     }
+
+    localUser = uList.querySelector('#user-' + clientData.id);
+    typingIcon = localUser.querySelector('.icon-pencil');
 }
 
 //////////////////////////
@@ -137,7 +141,7 @@ function initMessageSection() {
         messageContainer = addElement(messageSection, 'div', { className: 'field' }),
         messageField =  addElement(messageContainer, 'textarea', { id: 'messageField', className: 'input textarea', placeholder: 'Say something'}),
         sendButton = addElement(messageSection, 'button', { id: 'sendButton', type: 'button', className: 'pretty medium primary btn send', innerHTML: 'Send'}),
-        userListItem = document.querySelector('#user-' + clientData.id), typingIcon = false, typingTimeout = false, uliChildren, i;
+        userListItem = document.querySelector('#user-' + clientData.id);
 
     attachEventListener(sendButton, 'click', function(evt) {
         addToChatList(clientData.name, messageField.value);
@@ -146,24 +150,13 @@ function initMessageSection() {
 
     attachEventListener(messageField, 'keydown', function(evt) {
         //If key down, clear typingTimeout
-        clearTimeout(typingTimeout);
-        
-        if (typingIcon === false) {
-            typingIcon = addElement(userListItem, 'i', { className: 'icon-pencil' });
-        }
+        console.log('typing');
+        elementShow(typingIcon);
     });
 
     attachEventListener(messageField, 'keyup', function(evt) {
         //If using is no longer typing, remove pencil icon
-        typingTimeout = setTimeout(function () {
-            uliChildren = userListItem.children;
-            for (i = 0; i < uliChildren.length; i += 1) {
-                if (uliChildren[i].className === 'icon-pencil') {
-                    uliChildren[i].remove();
-                    typingIcon = false;
-                }
-            }
-        }, 2000);
+        elementHide(typingIcon);
     });
 }
 

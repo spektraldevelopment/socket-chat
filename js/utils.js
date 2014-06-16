@@ -51,6 +51,8 @@ function addElement(parent, type, attrs) {
             newElement.setAttribute('class', attrs[key]);
         } else if (key === 'innerHTML') {
             newElement.innerHTML = attrs[key];
+        } else if (key === 'style') {
+           newElement.setAttribute(key, attrs[key]);
         } else {
             newElement.setAttribute(key, attrs[key]);
         }
@@ -112,6 +114,26 @@ function getStyle(element, styleProperty) {
 //////////////////
 function stringToNum(str) {
     return parseInt(str, 10);
+}
+
+//////////////////
+////ELEMENT HIDE
+//////////////////
+function elementHide(el) {
+    var
+        currentClass = el.getAttribute('class'),
+        newClass = currentClass.replace('show', 'hide');
+    el.setAttribute('class', newClass);
+}
+
+//////////////////
+////ELEMENT SHOW
+//////////////////
+function elementShow(el) {
+    var
+        currentClass = el.getAttribute('class'),
+        newClass = currentClass.replace('hide', 'show');
+    el.setAttribute('class', newClass);
 }
 
 //////////////////

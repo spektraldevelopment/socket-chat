@@ -1711,6 +1711,10 @@ table.rounded thead th, table.rounded thead td, table.rounded caption + tbody tr
 #mainSection #messageSection .send { color: #fff; width: 100px; float: right; }
 #mainSection #messageSection .send:hover { cursor: pointer; }
 
+.hide { visibility: hidden; }
+
+.show { visibility: visible; }
+
 .inputError::-webkit-input-placeholder { color: #ca3838; }
 
 .inputError:-moz-placeholder { /* Firefox 18- */ color: #ca3838; }

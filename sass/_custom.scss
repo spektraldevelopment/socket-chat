@@ -139,6 +139,14 @@ $errorColour:#ca3838;
   }
 }
 
+.hide {
+  visibility: hidden;
+}
+
+.show {
+  visibility: visible;
+}
+
 .inputError {
   @extend %errorInput;
 }
@@ -158,6 +166,4 @@ $errorColour:#ca3838;
 %errorInput:-ms-input-placeholder {
   color: $errorColour;
 }
-
-
 
