@@ -9,7 +9,8 @@ var
     joinButton = document.querySelector("#joinButton"),
     loadingScreen = document.querySelector("#loadingScreen"),
     loadingMessage = document.querySelector("#loadingMessage"),
-    chatSection, chatList, alertSection, typingIcon, typingUser;
+    chatSection, chatList, alertSection, typingIcon, typingUser,
+    messageFieldFocused = false;
 
 //////////////////////////
 ////INIT
@@ -152,6 +153,12 @@ function initMessageSection() {
         //If key down, clear typingTimeout
         elementShow(typingIcon);
         iosocket.emit('keydown', { data: clientData } );
+
+        if (evt.keyCode === 13) {
+            evt.preventDefault();
+            addToChatList(clientData.name, messageField.value);
+            iosocket.emit('message', { client: clientData.name, message: messageField.value });
+        }
     });
 
     attachEventListener(messageField, 'keyup', function(evt) {

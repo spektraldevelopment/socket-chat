@@ -137,6 +137,14 @@ function elementShow(el) {
 }
 
 //////////////////
+////ON FOCUS BLUR
+//////////////////
+function onFocusBlur(el, focusBlurCallback) {
+    attachEventListener(el, 'focus', focusBlurCallback);
+    attachEventListener(el, 'blur', focusBlurCallback);
+}
+
+//////////////////
 ////LOG
 /////////////////
 function log (msg, type) {
