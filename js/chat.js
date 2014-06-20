@@ -9,8 +9,7 @@ var
     joinButton = document.querySelector("#joinButton"),
     loadingScreen = document.querySelector("#loadingScreen"),
     loadingMessage = document.querySelector("#loadingMessage"),
-    chatSection, chatList, alertSection, typingIcon, typingUser,
-    messageFieldFocused = false;
+    chatSection, chatList, alertSection, typingIcon, typingUser;
 
 //////////////////////////
 ////INIT
@@ -123,11 +122,18 @@ function initChatSection() {
     }
 }
 
-function addToChatList(client, msg) {
-    var item = addElement(chatList, 'li', { className: 'chatItem' });
+function addToChatList(client, msg, type) {
+    type = type || 'text';
+    var item = addElement(chatList, 'li', { className: 'chatItem' }), cImage;
 
     addElement(item, 'div', { className: 'chatName', innerHTML: client });
-    addElement(item, 'div', { className: 'chatMessage', innerHTML: msg });
+
+    if (type === 'image') {
+        cImage = addElement(item, 'img', { className: 'chatImage'})
+        cImage.src = msg;
+    } else {
+        addElement(item, 'div', { className: 'chatMessage', innerHTML: msg });
+    }
     addElement(item, 'div', { className: 'chatTime', innerHTML: '8:00pm' });
 
     chatSection.scrollTop = chatSection.scrollHeight;
@@ -141,8 +147,7 @@ function initMessageSection() {
         messageSection = addElement(mainSection, 'section', { id: 'messageSection', className: 'twelve columns'}),
         messageContainer = addElement(messageSection, 'div', { className: 'field' }),
         messageField =  addElement(messageContainer, 'textarea', { id: 'messageField', className: 'input textarea', placeholder: 'Say something'}),
-        sendButton = addElement(messageSection, 'button', { id: 'sendButton', type: 'button', className: 'pretty medium primary btn send', innerHTML: 'Send'}),
-        userListItem = document.querySelector('#user-' + clientData.id);
+        sendButton = addElement(messageSection, 'button', { id: 'sendButton', type: 'button', className: 'pretty medium primary btn send', innerHTML: 'Send'});
 
     attachEventListener(sendButton, 'click', function(evt) {
         addToChatList(clientData.name, messageField.value);
@@ -165,6 +170,27 @@ function initMessageSection() {
         //If using is no longer typing, remove pencil icon
         elementHide(typingIcon);
         iosocket.emit('keyup', { data: clientData } );
+    });
+
+    attachEventListener(messageField, 'drop', function(evt) {
+        log('DROP!@!!!!: ' + evt.dataTransfer);
+        evt.preventDefault();
+        evt.stopPropagation();
+        var
+            dt = evt.dataTransfer,
+            files = dt.files, i,
+            reader, bin, newFile;
+
+        for (i = 0; i < files.length; i += 1) {
+            reader = new FileReader();
+            reader.readAsDataURL(file);
+
+            attachEventListener(reader, 'loadedend', function(evt, file) {
+                bin = this.result;
+
+                addToChatList(clientData.name, bin, 'image')
+            });
+        }
     });
 }
 
