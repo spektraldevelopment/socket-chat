@@ -123,6 +123,9 @@ function initChatSection() {
 }
 
 function addToChatList(client, msg, type) {
+    log('client: ' + client);
+    log('msg: ' + msg);
+    log('type: ' + type);
     type = type || 'text';
     var item = addElement(chatList, 'li', { className: 'chatItem' }), cImage;
 
@@ -131,6 +134,7 @@ function addToChatList(client, msg, type) {
     if (type === 'image') {
         cImage = addElement(item, 'img', { className: 'chatImage'})
         cImage.src = msg;
+        log('Image: msg: ' + msg);
     } else {
         addElement(item, 'div', { className: 'chatMessage', innerHTML: msg });
     }
@@ -151,7 +155,7 @@ function initMessageSection() {
 
     attachEventListener(sendButton, 'click', function(evt) {
         addToChatList(clientData.name, messageField.value);
-        iosocket.emit('message', { client: clientData.name, message: messageField.value });
+        emitMessage(messageField.value);
     });
 
     attachEventListener(messageField, 'keydown', function(evt) {
@@ -162,7 +166,7 @@ function initMessageSection() {
         if (evt.keyCode === 13) {
             evt.preventDefault();
             addToChatList(clientData.name, messageField.value);
-            iosocket.emit('message', { client: clientData.name, message: messageField.value });
+            emitMessage(messageField.value);
         }
     });
 
@@ -182,16 +186,24 @@ function initMessageSection() {
             reader, bin, newFile;
 
         for (i = 0; i < files.length; i += 1) {
-            reader = new FileReader();
-            reader.readAsDataURL(file);
+            newFile = files[i];
 
-            attachEventListener(reader, 'loadedend', function(evt, file) {
+            reader = new FileReader();
+            reader.readAsDataURL(newFile);
+
+            attachEventListener(reader, 'loadend', function(evt, file) {
                 bin = this.result;
 
-                addToChatList(clientData.name, bin, 'image')
+                addToChatList(clientData.name, bin, 'image');
+                emitMessage(bin, 'image');
             });
         }
     });
+}
+
+function emitMessage(msg, type) {
+    type = type || 'text';
+    iosocket.emit('message', { client: clientData.name, message: msg, messageType: type });
 }
 
 //////////////////////////
@@ -218,7 +230,7 @@ iosocket.on('connected', function (data) {
 
 iosocket.on('onmessage', function (data) {
     socketLog("Message received: " + data.message);
-    addToChatList(data.client, data.message);
+    addToChatList(data.client, data.message, data.type);
 });
 
 iosocket.on('onkeydown', function(data) {

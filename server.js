@@ -28,7 +28,7 @@ io.sockets.on('connection', function(socket) {
     socket.on('message', function(data) {
         //send message to everyone except sender
         messageArray.push(data);
-        socket.broadcast.to('superroom').emit('onmessage', { client: data.client, message: data.message } );
+        socket.broadcast.to('superroom').emit('onmessage', { client: data.client, message: data.message, type: data.messageType } );
         console.log('Server: message: ' + data.message);
     });
 
