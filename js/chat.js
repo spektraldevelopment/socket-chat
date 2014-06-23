@@ -138,7 +138,7 @@ function addToChatList(client, msg, type) {
     } else {
         addElement(item, 'div', { className: 'chatMessage', innerHTML: msg });
     }
-    addElement(item, 'div', { className: 'chatTime', innerHTML: '8:00pm' });
+    addElement(item, 'div', { className: 'chatTime', innerHTML: getTime()});
 
     chatSection.scrollTop = chatSection.scrollHeight;
 }

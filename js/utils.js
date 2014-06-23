@@ -145,6 +145,19 @@ function onFocusBlur(el, focusBlurCallback) {
 }
 
 //////////////////
+////GET TIME
+//////////////////
+function getTime () {
+    var
+       date = new Date(),
+       hour = (date.getHours() % 12),
+       minute = date.getMinutes(),
+       time = hour.toString() + ":" + minute.toString();;
+    
+    return time;
+}
+
+//////////////////
 ////LOG
 /////////////////
 function log (msg, type) {
