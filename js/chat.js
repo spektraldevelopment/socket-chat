@@ -117,7 +117,7 @@ function initChatSection() {
     if (messageArray.length > 0) {
         //There are already messages, add them to the board
         for (i = 0; i < messageArray.length; i += 1) {
-            addToChatList(messageArray[i].client, messageArray[i].message);
+            addToChatList(messageArray[i].client, messageArray[i].message, messageArray[i].messageType);
         }
     }
 }
@@ -203,6 +203,7 @@ function initMessageSection() {
 
 function emitMessage(msg, type) {
     type = type || 'text';
+    log('emitMessage: type: ' + type)
     iosocket.emit('message', { client: clientData.name, message: msg, messageType: type });
 }
 
@@ -230,7 +231,7 @@ iosocket.on('connected', function (data) {
 
 iosocket.on('onmessage', function (data) {
     socketLog("Message received: " + data.message);
-    addToChatList(data.client, data.message, data.type);
+    addToChatList(data.client, data.message, data.messageType);
 });
 
 iosocket.on('onkeydown', function(data) {

@@ -152,8 +152,9 @@ function getTime () {
        date = new Date(),
        hour = (date.getHours() % 12),
        minute = date.getMinutes(),
-       time = hour.toString() + ":" + minute.toString();;
-    
+       amPm = (date.getHours() >= 12) ? 'pm' : 'am',
+       time = hour.toString() + ":" + minute.toString() + amPm;
+
     return time;
 }
 
