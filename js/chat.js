@@ -157,13 +157,14 @@ function initMessageSection() {
         fileInput = addElement(uploadPicture, 'input', { id: 'fileInput', type: 'file'});
 
     attachEventListener(sendButton, 'click', function(evt) {
-        addToChatList(clientData.name, messageField.value);
-        emitMessage(messageField.value);
+        if (messageField.value !== '') {
+            addToChatList(clientData.name, messageField.value);
+            emitMessage(messageField.value);
+        }
     });
 
     attachEventListener(uploadPicture, 'click', function(evt) {
         fileInput.click();
-
     });
 
     attachEventListener(fileInput, 'change', function(evt) {
@@ -175,7 +176,7 @@ function initMessageSection() {
         elementShow(typingIcon);
         iosocket.emit('keydown', { data: clientData } );
 
-        if (evt.keyCode === 13) {
+        if (evt.keyCode === 13 && messageField.value !== '') {
             evt.preventDefault();
             addToChatList(clientData.name, messageField.value);
             emitMessage(messageField.value);
@@ -196,20 +197,6 @@ function initMessageSection() {
             files = dt.files;
 
         addImageToChat(files);
-
-//        for (i = 0; i < files.length; i += 1) {
-//            newFile = files[i];
-//
-//            reader = new FileReader();
-//            reader.readAsDataURL(newFile);
-//
-//            attachEventListener(reader, 'loadend', function(evt, file) {
-//                bin = this.result;
-//
-//                addToChatList(clientData.name, bin, 'image');
-//                emitMessage(bin, 'image');
-//            });
-//        }
     });
 }
 
