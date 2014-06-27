@@ -163,6 +163,11 @@ function initMessageSection() {
 
     attachEventListener(uploadPicture, 'click', function(evt) {
         fileInput.click();
+
+    });
+
+    attachEventListener(fileInput, 'change', function(evt) {
+        addImageToChat(fileInput.files);
     });
 
     attachEventListener(messageField, 'keydown', function(evt) {
@@ -188,23 +193,42 @@ function initMessageSection() {
         evt.stopPropagation();
         var
             dt = evt.dataTransfer,
-            files = dt.files, i,
-            reader, bin, newFile;
+            files = dt.files;
 
-        for (i = 0; i < files.length; i += 1) {
-            newFile = files[i];
+        addImageToChat(files);
 
-            reader = new FileReader();
-            reader.readAsDataURL(newFile);
-
-            attachEventListener(reader, 'loadend', function(evt, file) {
-                bin = this.result;
-
-                addToChatList(clientData.name, bin, 'image');
-                emitMessage(bin, 'image');
-            });
-        }
+//        for (i = 0; i < files.length; i += 1) {
+//            newFile = files[i];
+//
+//            reader = new FileReader();
+//            reader.readAsDataURL(newFile);
+//
+//            attachEventListener(reader, 'loadend', function(evt, file) {
+//                bin = this.result;
+//
+//                addToChatList(clientData.name, bin, 'image');
+//                emitMessage(bin, 'image');
+//            });
+//        }
     });
+}
+
+function addImageToChat(files) {
+    var newFile, reader, bin, i;
+
+    for (i = 0; i < files.length; i += 1) {
+        newFile = files[i];
+
+        reader = new FileReader();
+        reader.readAsDataURL(newFile);
+
+        attachEventListener(reader, 'loadend', function(evt, file) {
+            bin = this.result;
+
+            addToChatList(clientData.name, bin, 'image');
+            emitMessage(bin, 'image');
+        });
+    }
 }
 
 function emitMessage(msg, type) {
