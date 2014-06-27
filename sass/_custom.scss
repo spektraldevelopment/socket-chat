@@ -136,6 +136,22 @@ $errorColour:#ca3838;
     .send:hover {
       cursor: pointer;
     }
+
+    #uploadPicture {
+
+      width: 50px;
+      cursor: pointer;
+      margin-right: 20px;
+      float: right;
+
+      input {
+        display: none;
+      }
+
+      i {
+        color: #fff;
+      }
+    }
   }
 }
 

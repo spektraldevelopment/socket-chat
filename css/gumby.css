@@ -1710,6 +1710,9 @@ table.rounded thead th, table.rounded thead td, table.rounded caption + tbody tr
 @media only screen and (max-width: 767px) { #mainSection #messageSection div textarea { height: 35px; } }
 #mainSection #messageSection .send { color: #fff; width: 100px; float: right; }
 #mainSection #messageSection .send:hover { cursor: pointer; }
+#mainSection #messageSection #uploadPicture { width: 50px; cursor: pointer; margin-right: 20px; float: right; }
+#mainSection #messageSection #uploadPicture input { display: none; }
+#mainSection #messageSection #uploadPicture i { color: #fff; }
 
 .hide { visibility: hidden; }
 

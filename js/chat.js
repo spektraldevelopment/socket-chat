@@ -151,11 +151,18 @@ function initMessageSection() {
         messageSection = addElement(mainSection, 'section', { id: 'messageSection', className: 'twelve columns'}),
         messageContainer = addElement(messageSection, 'div', { className: 'field' }),
         messageField =  addElement(messageContainer, 'textarea', { id: 'messageField', className: 'input textarea', placeholder: 'Say something'}),
-        sendButton = addElement(messageSection, 'button', { id: 'sendButton', type: 'button', className: 'pretty medium primary btn send', innerHTML: 'Send'});
+        sendButton = addElement(messageSection, 'button', { id: 'sendButton', type: 'button', className: 'pretty medium primary btn send', innerHTML: 'Send'}),
+        uploadPicture = addElement(messageSection, 'button', { id: 'uploadPicture', type: 'button', className: 'pretty medium primary btn'}),
+        picIcon = addElement(uploadPicture, 'i', { className: 'icon-picture'}),
+        fileInput = addElement(uploadPicture, 'input', { id: 'fileInput', type: 'file'});
 
     attachEventListener(sendButton, 'click', function(evt) {
         addToChatList(clientData.name, messageField.value);
         emitMessage(messageField.value);
+    });
+
+    attachEventListener(uploadPicture, 'click', function(evt) {
+        fileInput.click();
     });
 
     attachEventListener(messageField, 'keydown', function(evt) {
@@ -177,7 +184,6 @@ function initMessageSection() {
     });
 
     attachEventListener(messageField, 'drop', function(evt) {
-        log('DROP!@!!!!: ' + evt.dataTransfer);
         evt.preventDefault();
         evt.stopPropagation();
         var
