@@ -137,22 +137,26 @@ function addToChatList(client, msg, type) {
 
     if (type === 'image') {
         cImage = addElement(item, 'img', { className: 'chatImage', src: msg});
-        cImage.setAttribute('data-state', 'preview');
-        preview = createImagePreview(cImage);
-        cImage.src = preview;
+        if (getImageType(msg) === 'gif') {
+            //If image is animated, create preview
+            cImage.setAttribute('data-state', 'preview');
+            preview = createImagePreview(cImage);
+            cImage.src = preview;
+            attachEventListener(cImage, 'click', function(evt) {
+                state = cImage.getAttribute('data-state');
+                if (state === 'preview') {
+                    cImage.setAttribute('data-state', 'animated');
+                    cImage.src = msg;
 
-        attachEventListener(cImage, 'click', function(evt) {
-            state = cImage.getAttribute('data-state');
-            log('state: ' + state);
-            if (state === 'preview') {
-                cImage.setAttribute('data-state', 'animated');
-                cImage.src = msg;
-
-            } else {
-                cImage.setAttribute('data-state', 'preview');
-                cImage.src = preview;
-            }
-        });
+                } else {
+                    cImage.setAttribute('data-state', 'preview');
+                    cImage.src = preview;
+                }
+            });
+        } else {
+            //Image is not animated
+            cImage.src = msg;
+        }
     } else {
         addElement(item, 'div', { className: 'chatMessage', innerHTML: msg });
     }

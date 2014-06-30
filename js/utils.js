@@ -110,6 +110,14 @@ function getStyle(element, styleProperty) {
 }
 
 //////////////////
+////GET IMAGE TYPE
+//////////////////
+function getImageType(uri) {
+    var dataType = uri.split(';')[0];
+    return dataType.split('/')[1];
+}
+
+//////////////////
 ////STRING TO NUM
 //////////////////
 function stringToNum(str) {
