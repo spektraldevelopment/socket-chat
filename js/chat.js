@@ -131,12 +131,13 @@ function addToChatList(client, msg, type) {
     log('msg: ' + msg);
     log('type: ' + type);
     type = type || 'text';
-    var item = addElement(chatList, 'li', { className: 'chatItem' }), cImage, preview, state;
+    var item = addElement(chatList, 'li', { className: 'chatItem' }), cImage, preview, state, imageContainer;
 
     addElement(item, 'div', { className: 'chatName', innerHTML: client });
 
     if (type === 'image') {
-        cImage = addElement(item, 'img', { className: 'chatImage', src: msg});
+        imageContainer = addElement(item, 'div', { className: 'image-container'});
+        cImage = addElement(imageContainer, 'img', { className: 'chatImage', src: msg});
         if (getImageType(msg) === 'gif') {
             //If image is animated, create preview
             cImage.setAttribute('data-state', 'preview');
@@ -184,9 +185,29 @@ function addImageToChat(files) {
 }
 
 function createImagePreview(sourceImage) {
+
+    var size = 50;
     imageCanvas.width = sourceImage.width;
     imageCanvas.height = sourceImage.height;
     imageCanvasCTX.drawImage(sourceImage, 0, 0, imageCanvas.width, imageCanvas.height);
+
+    imageCanvasCTX.fillStyle = 'rgba(0, 0, 0, 0.75)';
+    imageCanvasCTX.fillRect(0 ,0, sourceImage.width, sourceImage.height);
+
+    imageCanvasCTX.beginPath();
+
+    imageCanvasCTX.moveTo((sourceImage.width / 2) - size, (sourceImage.height / 2) - size);
+    imageCanvasCTX.lineTo((sourceImage.width /2 ) + size, sourceImage.height / 2);
+    imageCanvasCTX.lineTo((sourceImage.width / 2) - size, (sourceImage.height / 2) + size);
+
+    imageCanvasCTX.lineWidth = 2;
+    imageCanvasCTX.fillStyle = "rgba(48, 133, 214, 0.75)";
+    imageCanvasCTX.strokeStyle = "rgb(255, 255, 255)";
+    imageCanvasCTX.closePath();
+
+    imageCanvasCTX.fill();
+    imageCanvasCTX.stroke();
+
     return imageCanvas.toDataURL('image/jpeg');
 }
 

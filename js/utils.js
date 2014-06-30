@@ -158,7 +158,7 @@ function onFocusBlur(el, focusBlurCallback) {
 function getTime () {
     var
        date = new Date(),
-       hour = (date.getHours() % 12),
+       hour = ((date.getHours() % 12) === 0) ? 12 : (date.getHours() % 12),
        minute = (date.getMinutes() <= 9) ? '0' + date.getMinutes() : date.getMinutes(),
        amPm = (date.getHours() >= 12) ? 'pm' : 'am',
        time = hour.toString() + ":" + minute.toString() + amPm;

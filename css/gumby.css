@@ -1703,6 +1703,8 @@ table.rounded thead th, table.rounded thead td, table.rounded caption + tbody tr
 #mainSection #chatSection #chatList .chatItem:nth-child(odd) { background: #eeeeee; }
 #mainSection #chatSection #chatList .chatItem { padding: 10px; }
 #mainSection #chatSection #chatList .chatItem .chatName { font-size: 0.9em; }
+#mainSection #chatSection #chatList .chatItem .image-container { width: auto; height: auto; }
+#mainSection #chatSection #chatList .chatItem .chatImage { display: block; margin: 0 auto; cursor: pointer; }
 #mainSection #chatSection #chatList .chatItem .chatMessage { color: #000; }
 #mainSection #chatSection #chatList .chatItem .chatTime { font-size: 0.75em; color: #b0b0b0; }
 #mainSection #messageSection { margin: 10px 0 16px; }
