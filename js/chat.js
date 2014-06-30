@@ -131,29 +131,28 @@ function addToChatList(client, msg, type) {
     log('msg: ' + msg);
     log('type: ' + type);
     type = type || 'text';
-    var item = addElement(chatList, 'li', { className: 'chatItem' }), cImage, pImage;
+    var item = addElement(chatList, 'li', { className: 'chatItem' }), cImage, preview, state;
 
     addElement(item, 'div', { className: 'chatName', innerHTML: client });
 
     if (type === 'image') {
-        cImage = addElement(item, 'img', { className: 'chatImage', style: 'display:none;'});
-        cImage.src = msg;
+        cImage = addElement(item, 'img', { className: 'chatImage', src: msg});
+        cImage.setAttribute('data-state', 'preview');
+        preview = createImagePreview(cImage);
+        cImage.src = preview;
 
-        attachEventListener(cImage, 'click', function() {
-            cImage.setAttribute('style', 'display:none');
-            pImage.setAttribute('style', 'display:inline')
+        attachEventListener(cImage, 'click', function(evt) {
+            state = cImage.getAttribute('data-state');
+            log('state: ' + state);
+            if (state === 'preview') {
+                cImage.setAttribute('data-state', 'animated');
+                cImage.src = msg;
+
+            } else {
+                cImage.setAttribute('data-state', 'preview');
+                cImage.src = preview;
+            }
         });
-
-        //This should only be added if the image is animated
-        pImage = addElement(item, 'img', {className: 'previewImage'});
-        pImage.src = createImagePreview(cImage);
-
-        attachEventListener(pImage, 'click', function(e) {
-            cImage.setAttribute('style', 'display:inline');
-            pImage.setAttribute('style', 'display:none');
-        });
-
-        log('Image: msg: ' + msg);
     } else {
         addElement(item, 'div', { className: 'chatMessage', innerHTML: msg });
     }
