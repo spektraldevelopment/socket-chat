@@ -9,7 +9,9 @@ var
     joinButton = document.querySelector("#joinButton"),
     loadingScreen = document.querySelector("#loadingScreen"),
     loadingMessage = document.querySelector("#loadingMessage"),
-    chatSection, chatList, alertSection, typingIcon, typingUser;
+    chatSection, chatList, alertSection, typingIcon, typingUser,
+    imageCanvas = document.createElement('canvas'),
+    imageCanvasCTX = imageCanvas.getContext('2d');
 
 //////////////////////////
 ////INIT
@@ -18,6 +20,8 @@ function initSocketChat() {
 
     attachEventListener(joinButton, 'click', onJoinClick);
     attachEventListener(chatNameInput, 'focus', onInputFocus);
+    mainSection.appendChild(imageCanvas);
+    imageCanvas.setAttribute('style', 'display:none');
     log("initSocketChat");
 }
 
@@ -127,13 +131,28 @@ function addToChatList(client, msg, type) {
     log('msg: ' + msg);
     log('type: ' + type);
     type = type || 'text';
-    var item = addElement(chatList, 'li', { className: 'chatItem' }), cImage;
+    var item = addElement(chatList, 'li', { className: 'chatItem' }), cImage, pImage;
 
     addElement(item, 'div', { className: 'chatName', innerHTML: client });
 
     if (type === 'image') {
-        cImage = addElement(item, 'img', { className: 'chatImage'})
+        cImage = addElement(item, 'img', { className: 'chatImage', style: 'display:none;'});
         cImage.src = msg;
+
+        attachEventListener(cImage, 'click', function() {
+            cImage.setAttribute('style', 'display:none');
+            pImage.setAttribute('style', 'display:inline')
+        });
+
+        //This should only be added if the image is animated
+        pImage = addElement(item, 'img', {className: 'previewImage'});
+        pImage.src = createImagePreview(cImage);
+
+        attachEventListener(pImage, 'click', function(e) {
+            cImage.setAttribute('style', 'display:inline');
+            pImage.setAttribute('style', 'display:none');
+        });
+
         log('Image: msg: ' + msg);
     } else {
         addElement(item, 'div', { className: 'chatMessage', innerHTML: msg });
@@ -141,6 +160,31 @@ function addToChatList(client, msg, type) {
     addElement(item, 'div', { className: 'chatTime', innerHTML: getTime()});
 
     chatSection.scrollTop = chatSection.scrollHeight;
+}
+
+function addImageToChat(files) {
+    var newFile, reader, bin, i;
+
+    for (i = 0; i < files.length; i += 1) {
+        newFile = files[i];
+
+        reader = new FileReader();
+        reader.readAsDataURL(newFile);
+
+        attachEventListener(reader, 'loadend', function(evt, file) {
+            bin = this.result;
+
+            addToChatList(clientData.name, bin, 'image');
+            emitMessage(bin, 'image');
+        });
+    }
+}
+
+function createImagePreview(sourceImage) {
+    imageCanvas.width = sourceImage.width;
+    imageCanvas.height = sourceImage.height;
+    imageCanvasCTX.drawImage(sourceImage, 0, 0, imageCanvas.width, imageCanvas.height);
+    return imageCanvas.toDataURL('image/jpeg');
 }
 
 //////////////////////////
@@ -198,24 +242,6 @@ function initMessageSection() {
 
         addImageToChat(files);
     });
-}
-
-function addImageToChat(files) {
-    var newFile, reader, bin, i;
-
-    for (i = 0; i < files.length; i += 1) {
-        newFile = files[i];
-
-        reader = new FileReader();
-        reader.readAsDataURL(newFile);
-
-        attachEventListener(reader, 'loadend', function(evt, file) {
-            bin = this.result;
-
-            addToChatList(clientData.name, bin, 'image');
-            emitMessage(bin, 'image');
-        });
-    }
 }
 
 function emitMessage(msg, type) {
