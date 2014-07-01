@@ -1,6 +1,6 @@
 var
     clientID, clientData = {}, clientArray, chatInitialized = false,
-    messageArray = [],
+    messageArray = [], gifArray = [],
     iosocket = io.connect('http://localhost:9999'),
     mainSection = document.querySelector("#mainSection"),
     startScreen = document.querySelector("#startScreen"),
@@ -114,9 +114,11 @@ function refreshUserList() {
 ////INIT CHAT SECTION
 //////////////////////////
 function initChatSection() {
-    var i;
+    var i, j, listOffsetTop, sectionHeight, listDim, gifItemDim;
     chatSection = addElement(mainSection, 'section', { id: 'chatSection'});
     chatList = addElement(chatSection, 'ul', { id: 'chatList'});
+
+    listOffsetTop = chatList.offsetTop;
 
     if (messageArray.length > 0) {
         //There are already messages, add them to the board
@@ -124,6 +126,22 @@ function initChatSection() {
             addToChatList(messageArray[i].client, messageArray[i].message, messageArray[i].messageType);
         }
     }
+
+    sectionHeight = chatSection.getBoundingClientRect().height;
+
+    //If an animated gif is playing but is not being viewed by user, reset gif to preview mode
+    attachEventListener(chatSection, 'scroll', function(evt) {
+        listDim = chatList.getBoundingClientRect();
+        for (j = 0; j < gifArray.length; j += 1) {
+            gifItemDim = gifArray[j][0].getBoundingClientRect();
+            if ((gifItemDim.top > (sectionHeight + listOffsetTop)) || (Math.round(gifItemDim.top + gifItemDim.height) < listOffsetTop)) {
+                if (gifArray[j][1].getAttribute('data-state') === 'animated') {
+                    gifArray[j][1].setAttribute('data-state', 'preview');
+                    gifArray[j][1].src = gifArray[j][2];
+                }
+            }
+        }
+    });
 }
 
 function addToChatList(client, msg, type) {
@@ -131,7 +149,7 @@ function addToChatList(client, msg, type) {
     log('msg: ' + msg);
     log('type: ' + type);
     type = type || 'text';
-    var item = addElement(chatList, 'li', { className: 'chatItem' }), cImage, preview, state, imageContainer;
+    var item = addElement(chatList, 'li', { className: 'chatItem' }), textMessage, cImage, preview, state, imageContainer;
 
     addElement(item, 'div', { className: 'chatName', innerHTML: client });
 
@@ -141,8 +159,10 @@ function addToChatList(client, msg, type) {
         if (getImageType(msg) === 'gif') {
             //If image is animated, create preview
             cImage.setAttribute('data-state', 'preview');
+            cImage.setAttribute('data-format', 'gif');
             preview = createImagePreview(cImage);
             cImage.src = preview;
+
             attachEventListener(cImage, 'click', function(evt) {
                 state = cImage.getAttribute('data-state');
                 if (state === 'preview') {
@@ -154,12 +174,15 @@ function addToChatList(client, msg, type) {
                     cImage.src = preview;
                 }
             });
+            gifArray.push([item, cImage, preview]);
         } else {
             //Image is not animated
+            cImage.setAttribute('data-format', getImageType(msg));
             cImage.src = msg;
         }
     } else {
-        addElement(item, 'div', { className: 'chatMessage', innerHTML: msg });
+        textMessage = addElement(item, 'div', { className: 'chatMessage', innerHTML: msg });
+        textMessage.setAttribute('data-format', 'text');
     }
     addElement(item, 'div', { className: 'chatTime', innerHTML: getTime()});
 
